@@ -18,18 +18,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Generate Git log
-        run: |
-          git fetch origin +refs/tags/*:refs/tags/*
-          GITVER=$(git describe --tags)
-          PREVVER=$(git describe --tags --abbrev=0 ${GITVER}~1)
-          git log --oneline ${PREVVER}..${GITVER} > gitlogs.txt
-
-      - name: Set variables
-        run: |
-          echo "VERSION=$(git describe --tags || git rev-parse --short HEAD)" >> $GITHUB_ENV
-          echo "LDFLAGS=$(echo "-s -w -buildid= -X main.MAINVER=${VERSION}")" >> $GITHUB_ENV
-
       - name: Build Vmessping
         run: |
           BINNAME=vmessping
